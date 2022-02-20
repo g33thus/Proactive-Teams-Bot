@@ -11,7 +11,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace ProActiveBot
+namespace ProActiveBot.Bot
 {
     public class AdapterWithErrorHandler : CloudAdapter
     {
@@ -20,7 +20,7 @@ namespace ProActiveBot
         {
             if (configuration.GetValue<bool>("UseSingleSignOn"))
             {
-                base.Use(new TeamsSSOTokenExchangeMiddleware(storage, configuration["ConnectionName"]));
+                Use(new TeamsSSOTokenExchangeMiddleware(storage, configuration["ConnectionName"]));
             }
 
             OnTurnError = async (turnContext, exception) =>

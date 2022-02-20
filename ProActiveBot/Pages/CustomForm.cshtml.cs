@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 
-namespace ProActiveBot.Pages
+namespace ProActiveBot.Bot.Pages
 {
     public class CustomFormModel : PageModel
     {

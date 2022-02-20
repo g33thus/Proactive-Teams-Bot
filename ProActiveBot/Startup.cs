@@ -10,10 +10,11 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProActiveBot.Dialogs;
+using ProActiveBot.Bot.Bots;
+using ProActiveBot.Bot.Dialogs;
 using System.Collections.Concurrent;
 
-namespace ProActiveBot
+namespace ProActiveBot.Bot
 {
     public class Startup
     {
@@ -54,7 +55,7 @@ namespace ProActiveBot
 
             services.AddSingleton<MainDialog>();
             services.AddSingleton<CheckInDialog>();
-            
+
             services.AddTransient<IBot, TeamsBot<MainDialog>>();
         }
 

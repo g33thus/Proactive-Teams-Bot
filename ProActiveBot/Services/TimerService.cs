@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProActiveBot.Services
+namespace ProActiveBot.Bot.Services
 {
     public class DailyTrigger
     {
@@ -29,7 +29,7 @@ namespace ProActiveBot.Services
             }, CancellationToken.Token);
         }
 
-        
+
 
     }
 }

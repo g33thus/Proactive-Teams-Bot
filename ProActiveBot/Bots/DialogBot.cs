@@ -12,14 +12,14 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Teams;
 using Microsoft.Bot.Schema;
 using Microsoft.Bot.Schema.Teams;
-using ProActiveBot.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
+using ProActiveBot.Bot.Models;
 
-namespace ProActiveBot
+namespace ProActiveBot.Bot.Bots
 {
     // This IBot implementation can run any type of Dialog. The use of type parameterization is to allows multiple different bots
     // to be run at different endpoints within the same project. This can be achieved by defining distinct Controller types
@@ -47,7 +47,7 @@ namespace ProActiveBot
             Logger = logger;
         }
 
-        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
 
@@ -75,7 +75,7 @@ namespace ProActiveBot
 
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
-            
+
         }
         protected override Task<TaskModuleResponse> OnTeamsTaskModuleFetchAsync(ITurnContext<IInvokeActivity> turnContext, TaskModuleRequest taskModuleRequest, CancellationToken cancellationToken)
         {

@@ -16,9 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ProActiveBot.Services;
-using ProActiveBot.Dialogs;
 
-namespace ProActiveBot.Dialogs
+namespace ProActiveBot.Bot.Dialogs
 {
     public class MainDialog : LogoutDialog
     {
@@ -48,9 +47,9 @@ namespace ProActiveBot.Dialogs
                 //LoginStepAsync,
                 //TriggerStepAsync,
                 IntroStepAsync
-                
+
             }));
-            AddDialog(new CheckInDialog(configuration,logger));
+            AddDialog(new CheckInDialog(configuration, logger));
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
@@ -64,7 +63,7 @@ namespace ProActiveBot.Dialogs
         {
             //Get the token from the previous step.Note that we could also have gotten the
             // token directly from the prompt itself.There is an example of this in the next method.
-           var tokenResponse = (TokenResponse)stepContext.Result;
+            var tokenResponse = (TokenResponse)stepContext.Result;
             if (tokenResponse?.Token != null)
             {
                 // Pull in the data from the Microsoft Graph.
@@ -74,19 +73,19 @@ namespace ProActiveBot.Dialogs
                             me.JobTitle : "Unknown";
 
                 await stepContext.Context.SendActivityAsync($"You're logged in as {me.DisplayName} ({me.UserPrincipalName}); you job title is: {title}");
-                 return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to view your token?") }, cancellationToken);
+                return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to view your token?") }, cancellationToken);
             }
             else
             {
                 await stepContext.Context.SendActivityAsync(MessageFactory.Text("Login was not successful please try again."), cancellationToken);
             }
-            
+
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
         private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             return await stepContext.BeginDialogAsync(nameof(CheckInDialog));
-        }  
-      
+        }
+
     }
 }

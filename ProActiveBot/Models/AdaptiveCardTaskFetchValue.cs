@@ -3,7 +3,7 @@
 
 using Newtonsoft.Json;
 
-namespace ProActiveBot.Models
+namespace ProActiveBot.Bot.Models
 {
     public class AdaptiveCardTaskFetchValue<T>
     {

@@ -8,7 +8,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 
-namespace ProActiveBot.Dialogs
+namespace ProActiveBot.Bot.Dialogs
 {
     public class LogoutDialog : ComponentDialog
     {
@@ -20,7 +20,7 @@ namespace ProActiveBot.Dialogs
 
         protected string ConnectionName { get; }
 
-        protected override async Task<DialogTurnResult> OnBeginDialogAsync(DialogContext innerDc, object options, CancellationToken cancellationToken = default(CancellationToken))
+        protected override async Task<DialogTurnResult> OnBeginDialogAsync(DialogContext innerDc, object options, CancellationToken cancellationToken = default)
         {
             var result = await InterruptAsync(innerDc, cancellationToken);
             if (result != null)
@@ -31,7 +31,7 @@ namespace ProActiveBot.Dialogs
             return await base.OnBeginDialogAsync(innerDc, options, cancellationToken);
         }
 
-        protected override async Task<DialogTurnResult> OnContinueDialogAsync(DialogContext innerDc, CancellationToken cancellationToken = default(CancellationToken))
+        protected override async Task<DialogTurnResult> OnContinueDialogAsync(DialogContext innerDc, CancellationToken cancellationToken = default)
         {
             var result = await InterruptAsync(innerDc, cancellationToken);
             if (result != null)
@@ -42,14 +42,14 @@ namespace ProActiveBot.Dialogs
             return await base.OnContinueDialogAsync(innerDc, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> InterruptAsync(DialogContext innerDc, CancellationToken cancellationToken = default(CancellationToken))
+        private async Task<DialogTurnResult> InterruptAsync(DialogContext innerDc, CancellationToken cancellationToken = default)
         {
             if (innerDc?.Context?.Activity?.Type == ActivityTypes.Message)
             {
                 var text = innerDc?.Context?.Activity?.Text?.ToLowerInvariant();
 
                 // Allow logout anywhere in the command
-                if (text!=null && text.IndexOf("logout") >= 0)
+                if (text != null && text.IndexOf("logout") >= 0)
                 {
                     // The UserTokenClient encapsulates the authentication processes.
                     var userTokenClient = innerDc.Context.TurnState.Get<UserTokenClient>();

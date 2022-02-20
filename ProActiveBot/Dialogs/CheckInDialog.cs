@@ -15,9 +15,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ProActiveBot.Services;
 
-namespace ProActiveBot.Dialogs
+namespace ProActiveBot.Bot.Dialogs
 {
-    public class CheckInDialog:ComponentDialog
+    public class CheckInDialog : ComponentDialog
     {
         protected readonly ILogger Logger;
 
@@ -39,13 +39,14 @@ namespace ProActiveBot.Dialogs
         }
         private async Task<DialogTurnResult> CheckInStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if (stepContext.Context.Activity.Text=="gg") {
+            if (stepContext.Context.Activity.Text == "gg")
+            {
                 var reply = MessageFactory.Attachment(GetCheckInCard());
                 await stepContext.Context.SendActivityAsync(reply, cancellationToken);
             }
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
-       
+
         private static Attachment GetCheckInCard()
         {
             // combine path for cross platform support
@@ -59,7 +60,7 @@ namespace ProActiveBot.Dialogs
             };
             return adaptiveCardAttachment;
         }
-      
+
 
     }
 }

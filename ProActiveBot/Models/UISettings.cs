@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace ProActiveBot.Models
+namespace ProActiveBot.Bot.Models
 {
     public class UISettings
     {

@@ -13,9 +13,9 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
-using ProActiveBot.Models;
+using ProActiveBot.Bot.Models;
 
-namespace ProActiveBot.Controllers
+namespace ProActiveBot.Bot.Controllers
 {
     [Route("api/notify")]
     [ApiController]
@@ -36,7 +36,7 @@ namespace ProActiveBot.Controllers
         {
             foreach (var conversationReference in _conversationReferences.Values)
             {
-                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, BotCallback, default(CancellationToken));
+                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, BotCallback, default);
             }
 
             // Let the caller know proactive messages have been sent
@@ -56,7 +56,8 @@ namespace ProActiveBot.Controllers
                 await turnContext.SendActivityAsync(reply, cancellationToken);
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
             }
         }
         private static Attachment GetIntroCard()
