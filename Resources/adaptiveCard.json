@@ -1,0 +1,274 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+//{
+//  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+//  "version": "1.0",
+//  "type": "AdaptiveCard",
+//  "body": [
+//    {
+//      "type": "TextBlock",
+//      "text": "Enter Text Here",
+//      "weight": "bolder",
+//      "isSubtle": false
+//    },
+//    {
+//      "type": "Input.Text",
+//      "id": "usertext",
+//      "spacing": "none",
+//      "isMultiLine": "true",
+//      "placeholder": "add some text and submit"
+//    }
+//  ],
+//  "actions": [
+//    {
+//      "type": "Action.Submit",
+//      "title": "Submit"
+//    }
+//  ]
+//}
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "Image",
+              "style": "Person",
+              "url": "${creator.profileImage}",
+              "size": "Small"
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "weight": "Bolder",
+              "text": "Perkio",
+              "wrap": true,
+              "style": "heading",
+              "color": "Dark"
+            }
+          ],
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "size": "Default",
+      "weight": "Bolder",
+      "text": "This is your pulse.",
+      "horizontalAlignment": "Left",
+      "wrap": true,
+      "style": "default"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "energy",
+      "label": "How are your energy levels today?",
+      "value": "1",
+      "choices": [
+        {
+          "title": "Drained",
+          "value": "Drained"
+        },
+        {
+          "title": "Running Low",
+          "value": "Running Low"
+        },
+        {
+          "title": "Operational",
+          "value": "Operational"
+        },
+        {
+          "title": "Powerful",
+          "value": "Powerful"
+        },
+        {
+          "title": "Super Charged!",
+          "value": "Super Charged!"
+        }
+      ],
+      "$data": "energy",
+      "style": "expanded"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "motivation",
+      "label": "How motivated do you feel today?",
+      "value": "1",
+      "choices": [
+        {
+          "title": "Disheartened",
+          "value": "Disheartened"
+        },
+        {
+          "title": "Unmotivated",
+          "value": "Unmotivated"
+        },
+        {
+          "title": "Somewhat",
+          "value": "Somewhat"
+        },
+        {
+          "title": "Inspired",
+          "value": "Inspired"
+        },
+        {
+          "title": "Unstoppable",
+          "value": "Unstoppable"
+        }
+      ],
+      "$data": "motivation",
+      "style": "expanded"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "feeling",
+      "label": "How are you feeling today?",
+      "value": "1",
+      "choices": [
+        {
+          "title": "☺️ Relaxed ",
+          "value": "Drained"
+        },
+        {
+          "title": "😌  Calm",
+          "value": "Running Low"
+        },
+        {
+          "title": "😐 Neutral",
+          "value": "Operational"
+        },
+        {
+          "title": "😟 Tense",
+          "value": "Powerful"
+        },
+        {
+          "title": "🤯 Stressed",
+          "value": "Super Charged!"
+        }
+      ],
+      "$data": "feeling",
+      "style": "expanded",
+      "spacing": "Large"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "work",
+      "label": "Do you find your workload today to be reasonable?",
+      "value": "1",
+      "choices": [
+        {
+          "title": "1- Reasonable",
+          "value": "1"
+        },
+        {
+          "title": "2",
+          "value": "2"
+        },
+        {
+          "title": "3",
+          "value": "3"
+        },
+        {
+          "title": "4",
+          "value": "4"
+        },
+        {
+          "title": "5- Unreasonable",
+          "value": "5"
+        }
+      ],
+      "$data": "work",
+      "style": "expanded"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "mood",
+      "label": "What is your mood today?",
+      "value": "1",
+      "choices": [
+        {
+          "title": "😫 Awful",
+          "value": "Drained"
+        },
+        {
+          "title": "😕 Bad",
+          "value": "Running Low"
+        },
+        {
+          "title": "🙂 Okay",
+          "value": "Operational"
+        },
+        {
+          "title": "😃 Good",
+          "value": "Powerful"
+        },
+        {
+          "title": "😄 Great",
+          "value": "Super Charged!"
+        }
+      ],
+      "$data": "mood",
+      "style": "expanded"
+    },
+    {
+      "type": "ColumnSet"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Cancel",
+                  "mode": "secondary",
+                  "style": "destructive",
+                  "id": "Cancel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "ActionSet",
+              "actions": [
+                {
+                  "type": "Action.Submit",
+                  "title": "Submit",
+                  "style": "positive",
+                  "id": "Submit"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
