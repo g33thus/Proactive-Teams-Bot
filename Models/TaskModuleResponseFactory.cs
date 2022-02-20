@@ -3,7 +3,7 @@
 
 using Microsoft.Bot.Schema.Teams;
 
-namespace Microsoft.BotBuilderSamples.Models
+namespace ProActiveBot.Models
 {
     public static class TaskModuleResponseFactory
     {

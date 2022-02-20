@@ -11,12 +11,12 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Bot.Schema.Teams;
-using Microsoft.BotBuilderSamples.Models;
+using ProActiveBot.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Microsoft.BotBuilderSamples
+namespace ProActiveBot
 {
     public class MainDialog : LogoutDialog
     {

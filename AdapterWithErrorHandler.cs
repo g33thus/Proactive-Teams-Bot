@@ -11,7 +11,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.BotBuilderSamples
+namespace ProActiveBot
 {
     public class AdapterWithErrorHandler : CloudAdapter
     {

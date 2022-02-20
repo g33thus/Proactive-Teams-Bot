@@ -10,7 +10,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.BotBuilderSamples
+namespace ProActiveBot
 {
     // This bot is derived (view DialogBot<T>) from the TeamsACtivityHandler class currently included as part of this sample.
 

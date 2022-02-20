@@ -8,7 +8,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 
-namespace Microsoft.BotBuilderSamples
+namespace ProActiveBot
 {
     public class LogoutDialog : ComponentDialog
     {
