@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ProActive Bot
+/.vs/ProActiveBot/v17
+/.vs/TeamsTaskModule/v16
