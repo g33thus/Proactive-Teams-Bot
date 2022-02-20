@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +17,8 @@ namespace ProActiveBot
 
     public class TeamsBot<T> : DialogBot<T> where T : Dialog
     {
-        public TeamsBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger, IConfiguration config)
-            : base(conversationState, userState, dialog, logger, config)
+        public TeamsBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger, IConfiguration config, ConcurrentDictionary<string, ConversationReference> conversationReferences)
+            : base(conversationState, userState, dialog, logger, config, conversationReferences)
         {
         }
 
@@ -28,6 +29,7 @@ namespace ProActiveBot
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
                     await turnContext.SendActivityAsync(MessageFactory.Text("Hi, there! Welcome!"), cancellationToken);
+
                 }
             }
         }

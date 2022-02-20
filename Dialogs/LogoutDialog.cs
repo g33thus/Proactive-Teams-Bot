@@ -8,7 +8,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 
-namespace ProActiveBot
+namespace ProActiveBot.Dialogs
 {
     public class LogoutDialog : ComponentDialog
     {
@@ -44,12 +44,12 @@ namespace ProActiveBot
 
         private async Task<DialogTurnResult> InterruptAsync(DialogContext innerDc, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (innerDc.Context.Activity.Type == ActivityTypes.Message)
+            if (innerDc?.Context?.Activity?.Type == ActivityTypes.Message)
             {
-                var text = innerDc.Context.Activity.Text.ToLowerInvariant();
+                var text = innerDc?.Context?.Activity?.Text?.ToLowerInvariant();
 
                 // Allow logout anywhere in the command
-                if (text.IndexOf("logout") >= 0)
+                if (text!=null && text.IndexOf("logout") >= 0)
                 {
                     // The UserTokenClient encapsulates the authentication processes.
                     var userTokenClient = innerDc.Context.TurnState.Get<UserTokenClient>();

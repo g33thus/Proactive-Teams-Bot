@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
 
 namespace ProActiveBot
 {
@@ -32,9 +33,13 @@ namespace ProActiveBot
         protected readonly ILogger Logger;
         protected readonly BotState UserState;
         private readonly string _baseUrl;
-        public DialogBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger, IConfiguration configuration
+        // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
+        private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
+
+        public DialogBot(ConversationState conversationState, UserState userState, T dialog, ILogger<DialogBot<T>> logger, IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences
             )
         {
+            _conversationReferences = conversationReferences;
             _baseUrl = configuration["BaseUrl"];
             ConversationState = conversationState;
             UserState = userState;
@@ -50,9 +55,22 @@ namespace ProActiveBot
             await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
             await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
+        private void AddConversationReference(Activity activity)
+        {
+            var conversationReference = activity.GetConversationReference();
+            _conversationReferences.AddOrUpdate(conversationReference.User.Id, conversationReference, (key, newValue) => conversationReference);
+        }
 
+        protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+            AddConversationReference(turnContext.Activity as Activity);
+
+            return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
+        }
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+            AddConversationReference(turnContext.Activity as Activity);
+
             Logger.LogInformation("Running dialog with Message Activity.");
 
             // Run the Dialog with the new message Activity.

@@ -15,8 +15,10 @@ using ProActiveBot.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ProActiveBot.Services;
+using ProActiveBot.Dialogs;
 
-namespace ProActiveBot
+namespace ProActiveBot.Dialogs
 {
     public class MainDialog : LogoutDialog
     {
@@ -43,9 +45,12 @@ namespace ProActiveBot
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 //PromptStepAsync,
-                LoginStepAsync,
+                //LoginStepAsync,
+                //TriggerStepAsync,
+                IntroStepAsync
+                
             }));
-
+            AddDialog(new CheckInDialog(configuration,logger));
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
@@ -57,108 +62,31 @@ namespace ProActiveBot
 
         private async Task<DialogTurnResult> LoginStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // Get the token from the previous step. Note that we could also have gotten the
-            // token directly from the prompt itself. There is an example of this in the next method.
-            //var tokenResponse = (TokenResponse)stepContext.Result;
-            //if (tokenResponse?.Token != null)
-            //{
-            //    // Pull in the data from the Microsoft Graph.
-            //    var client = new SimpleGraphClient(tokenResponse.Token);
-            //    var me = await client.GetMeAsync();
-            //    var title = !string.IsNullOrEmpty(me.JobTitle) ?
-            //                me.JobTitle : "Unknown";
+            //Get the token from the previous step.Note that we could also have gotten the
+            // token directly from the prompt itself.There is an example of this in the next method.
+           var tokenResponse = (TokenResponse)stepContext.Result;
+            if (tokenResponse?.Token != null)
+            {
+                // Pull in the data from the Microsoft Graph.
+                var client = new SimpleGraphClient(tokenResponse.Token);
+                var me = await client.GetMeAsync();
+                var title = !string.IsNullOrEmpty(me.JobTitle) ?
+                            me.JobTitle : "Unknown";
 
-            //    await stepContext.Context.SendActivityAsync($"You're logged in as {me.DisplayName} ({me.UserPrincipalName}); you job title is: {title}");
-            //    //TODO CHECK
-            //    var reply = MessageFactory.Attachment(new[] { GetTaskModuleHeroCardOptions(), GetTaskModuleAdaptiveCardOptions() });
-            //    await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-            //   // return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to view your token?") }, cancellationToken);
-            //}
-            //else
-            //{
-            //    await stepContext.Context.SendActivityAsync(MessageFactory.Text("Login was not successful please try again."), cancellationToken);
-            //}
-
-            var reply = MessageFactory.Attachment(CreateAdaptiveCardAttachment() );
-            await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-
+                await stepContext.Context.SendActivityAsync($"You're logged in as {me.DisplayName} ({me.UserPrincipalName}); you job title is: {title}");
+                 return await stepContext.PromptAsync(nameof(ConfirmPrompt), new PromptOptions { Prompt = MessageFactory.Text("Would you like to view your token?") }, cancellationToken);
+            }
+            else
+            {
+                await stepContext.Context.SendActivityAsync(MessageFactory.Text("Login was not successful please try again."), cancellationToken);
+            }
+            
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
-
-        //private async Task<DialogTurnResult> DisplayTokenPhase1Async(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    await stepContext.Context.SendActivityAsync(MessageFactory.Text("Thank you."), cancellationToken);
-
-        //    var result = (bool)stepContext.Result;
-        //    if (result)
-        //    {
-        //        // Call the prompt again because we need the token. The reasons for this are:
-        //        // 1. If the user is already logged in we do not need to store the token locally in the bot and worry
-        //        // about refreshing it. We can always just call the prompt again to get the token.
-        //        // 2. We never know how long it will take a user to respond. By the time the
-        //        // user responds the token may have expired. The user would then be prompted to login again.
-        //        //
-        //        // There is no reason to store the token locally in the bot because we can always just call
-        //        // the OAuth prompt to get the token or get a new token if needed.
-        //        return await stepContext.BeginDialogAsync(nameof(OAuthPrompt), cancellationToken: cancellationToken);
-        //    }
-
-        //    return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-        //}
-
-        //private async Task<DialogTurnResult> DisplayTokenPhase2Async(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        //{
-        //    var tokenResponse = (TokenResponse)stepContext.Result;
-        //    if (tokenResponse != null)
-        //    {
-        //        await stepContext.Context.SendActivityAsync(MessageFactory.Text($"Here is your token {tokenResponse.Token}"), cancellationToken);
-        //    }
-
-        //    return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-        //}
-       
-
-        //private static Attachment GetTaskModuleHeroCardOptions()
-        //{
-        //    // Create a Hero Card with TaskModuleActions for each Task Module
-        //    return new HeroCard()
-        //    {
-        //        Title = "Task Module Invocation from Hero Card",
-        //        Buttons = new[] { TaskModuleUIConstants.AdaptiveCard, TaskModuleUIConstants.CustomForm, TaskModuleUIConstants.YouTube }
-        //                    .Select(cardType => new TaskModuleAction(cardType.ButtonTitle, new CardTaskFetchValue<string>() { Data = cardType.Id }))
-        //                    .ToList<CardAction>(),
-        //    }.ToAttachment();
-        //}
-
-        private static Attachment GetTaskModuleAdaptiveCardOptions()
+        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // Create an Adaptive Card with an AdaptiveSubmitAction for each Task Module
-            var card = new AdaptiveCard(new AdaptiveSchemaVersion(1, 2))
-            {
-                Body = new List<AdaptiveElement>()
-                    {
-                        new AdaptiveTextBlock(){ Text="Task Module Invocation from Adaptive Card", Weight=AdaptiveTextWeight.Bolder, Size=AdaptiveTextSize.Large}
-                    },
-                Actions = new[] { TaskModuleUIConstants.AdaptiveCard, TaskModuleUIConstants.CustomForm, TaskModuleUIConstants.YouTube }
-                            .Select(cardType => new AdaptiveSubmitAction() { Title = cardType.ButtonTitle, Data = new AdaptiveCardTaskFetchValue<string>() { Data = cardType.Id } })
-                            .ToList<AdaptiveAction>(),
-            };
-
-            return new Attachment() { ContentType = AdaptiveCard.ContentType, Content = card };
-        }
-
-        private static Attachment CreateAdaptiveCardAttachment()
-        {
-            // combine path for cross platform support
-            string[] paths = { ".", "Resources", "adaptiveCard.json" };
-            var adaptiveCardJson = File.ReadAllText(Path.Combine(paths));
-
-            var adaptiveCardAttachment = new Attachment()
-            {
-                ContentType = "application/vnd.microsoft.card.adaptive",
-                Content = JsonConvert.DeserializeObject(adaptiveCardJson),
-            };
-            return adaptiveCardAttachment;
-        }
+            return await stepContext.BeginDialogAsync(nameof(CheckInDialog));
+        }  
+      
     }
 }
