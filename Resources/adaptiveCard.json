@@ -77,6 +77,8 @@
       "id": "energy",
       "label": "How are your energy levels today?",
       "value": "1",
+      "isRequired": true,
+      "errorMessage": "Please choose your energy level.",
       "choices": [
         {
           "title": "Drained",
@@ -107,6 +109,8 @@
       "id": "motivation",
       "label": "How motivated do you feel today?",
       "value": "1",
+      "isRequired": true,
+      "errorMessage": "Please choose how motivated you are.",
       "choices": [
         {
           "title": "Disheartened",
@@ -137,6 +141,8 @@
       "id": "feeling",
       "label": "How are you feeling today?",
       "value": "1",
+      "isRequired": true,
+      "errorMessage": "Please choose how you are feeling today.",
       "choices": [
         {
           "title": "☺️ Relaxed ",
@@ -167,7 +173,8 @@
       "type": "Input.ChoiceSet",
       "id": "work",
       "label": "Do you find your workload today to be reasonable?",
-      "value": "1",
+      "isRequired": true,
+      "errorMessage": "Please choose how reasonable your workload is.",
       "choices": [
         {
           "title": "1- Reasonable",
@@ -198,6 +205,8 @@
       "id": "mood",
       "label": "What is your mood today?",
       "value": "1",
+      "isRequired": true,
+      "errorMessage": "Please choose your mood.",
       "choices": [
         {
           "title": "😫 Awful",
@@ -245,7 +254,8 @@
                   "title": "Cancel",
                   "mode": "secondary",
                   "style": "destructive",
-                  "id": "Cancel"
+                  "id": "Cancel",
+                  "associatedInputs": "none"
                 }
               ]
             }
