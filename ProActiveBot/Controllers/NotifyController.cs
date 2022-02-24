@@ -76,5 +76,49 @@ namespace ProActiveBot.Bot.Controllers
 
             return new Attachment() { ContentType = AdaptiveCard.ContentType, Content = card };
         }
+        //private async Task MessageAllMembersAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        //{
+        //    var teamsChannelId = turnContext.Activity.TeamsGetChannelId();
+        //    var serviceUrl = turnContext.Activity.ServiceUrl;
+        //    var credentials = new MicrosoftAppCredentials(_appId, _appPassword);
+        //    ConversationReference conversationReference = null;
+
+        //    var members = await GetPagedMembers(turnContext, cancellationToken);
+
+        //    foreach (var teamMember in members)
+        //    {
+        //        var proactiveMessage = MessageFactory.Text($"Hello {teamMember.GivenName} {teamMember.Surname}. I'm a Teams conversation bot.");
+
+        //        var conversationParameters = new ConversationParameters
+        //        {
+        //            IsGroup = false,
+        //            Bot = turnContext.Activity.Recipient,
+        //            Members = new ChannelAccount[] { teamMember },
+        //            TenantId = turnContext.Activity.Conversation.TenantId,
+        //        };
+
+        //        await ((CloudAdapter)turnContext.Adapter).CreateConversationAsync(
+        //            credentials.MicrosoftAppId,
+        //            teamsChannelId,
+        //            serviceUrl,
+        //            credentials.OAuthScope,
+        //            conversationParameters,
+        //            async (t1, c1) =>
+        //            {
+        //                conversationReference = t1.Activity.GetConversationReference();
+        //                await ((CloudAdapter)turnContext.Adapter).ContinueConversationAsync(
+        //                    _appId,
+        //                    conversationReference,
+        //                    async (t2, c2) =>
+        //                    {
+        //                        await t2.SendActivityAsync(proactiveMessage, c2);
+        //                    },
+        //                    cancellationToken);
+        //            },
+        //            cancellationToken);
+        //    }
+
+        //    await turnContext.SendActivityAsync(MessageFactory.Text("All messages have been sent."), cancellationToken);
+        //}
     }
 }

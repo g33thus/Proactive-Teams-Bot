@@ -9,11 +9,11 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Bot.Schema.Teams;
-using ProActiveBot.Models;
+using ProActiveBot.Bot.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using ProActiveBot.Services;
+using ProActiveBot.Bot.Services;
 
 namespace ProActiveBot.Bot.Dialogs
 {
