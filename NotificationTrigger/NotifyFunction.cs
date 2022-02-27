@@ -1,8 +1,8 @@
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
 
 namespace NotificationTrigger
 {
@@ -30,4 +30,4 @@ namespace NotificationTrigger
             }
         }
     }
- }
+}

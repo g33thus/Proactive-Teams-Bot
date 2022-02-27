@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
-using Microsoft.Bot.Builder.Teams;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,10 +52,10 @@ namespace ProActiveBot.Bot
             services.AddSingleton<UserState>();
             services.AddSingleton<ConversationState>();
 
-            services.AddSingleton<MainDialog>();
+            //services.AddSingleton<MainDialog>();
             services.AddSingleton<CheckInDialog>();
 
-            services.AddTransient<IBot, TeamsBot<MainDialog>>();
+            services.AddTransient<IBot, TeamsBot<CheckInDialog>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
