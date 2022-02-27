@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using ProActiveBot.Bot.Constants;
 using ProActiveBot.Bot.Helpers;
 using ProActiveBot.Bot.Models;
+using System;
+using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,11 +20,13 @@ namespace ProActiveBot.Bot.Dialogs
     {
         protected readonly ILogger Logger;
         private readonly IConfiguration _configuration;
-
-        public CheckInDialog(IConfiguration configuration, ILogger<CheckInDialog> logger)
+        private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
+        public CheckInDialog(IConfiguration configuration, ILogger<CheckInDialog> logger, ConcurrentDictionary<string, ConversationReference> conversationReferences)
         {
             Logger = logger;
             _configuration = configuration;
+            _conversationReferences = conversationReferences;
+
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
@@ -68,13 +72,27 @@ namespace ProActiveBot.Bot.Dialogs
         }
         private IMessageActivity PostDataToDB(CheckinValue checkInData)
         {
-            HttpContent dataToPost = GetCheckinFormData(checkInData);
-            var response = HTTPRequestHelper.Post(_configuration.GetValue<string>("ApiUrl"), dataToPost);
-            if (response.IsSuccessStatusCode)
+            DayOfWeek day = DateTime.Now.DayOfWeek;
+            if ((day == DayOfWeek.Saturday) || (day == DayOfWeek.Sunday))
             {
-                return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.Completed));
+                return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.CheckedInTimeOut));
             }
-            else return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.PostDataFailure));
+            if (CheckIfCheckedIn(checkInData.User.Id))
+            {
+                HttpContent dataToPost = GetCheckinFormData(checkInData);
+                var response = HTTPRequestHelper.Post(_configuration.GetValue<string>("ApiUrl"), dataToPost);
+                if (response.IsSuccessStatusCode)
+                {
+                    return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.Completed));
+                }
+                else return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.PostDataFailure));
+
+            }
+            else
+            {
+                return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.AlreadyCheckedIn));
+            }
+            
         }
         private HttpContent GetCheckinFormData(CheckinValue checkInData)
         {
@@ -83,5 +101,10 @@ namespace ProActiveBot.Bot.Dialogs
             return new StringContent(json);
         }
 
+        //CHECK THIS IN OLD
+        private bool CheckIfCheckedIn(string userId)
+        {
+            return false;
+        }
     }
 }
