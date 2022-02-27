@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using ProActiveBot.Bot.Models;
+﻿using ProActiveBot.Bot.Models;
 
 namespace ProActiveBot.Bot.Helpers
 {

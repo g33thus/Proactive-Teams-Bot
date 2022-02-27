@@ -40,162 +40,158 @@
     },
     {
       "type": "Input.ChoiceSet",
-      "id": "energy",
+      "id": "Energy",
       "label": "How are your energy levels today?",
-      "value": "1",
       "isRequired": true,
       "errorMessage": "Please choose your energy level.",
       "choices": [
         {
           "title": "Drained",
-          "value": "Drained"
+          "value": 1
         },
         {
           "title": "Running Low",
-          "value": "Running Low"
+          "value": 2
         },
         {
           "title": "Operational",
-          "value": "Operational"
+          "value": 3
         },
         {
           "title": "Powerful",
-          "value": "Powerful"
+          "value": 4
         },
         {
           "title": "Super Charged!",
-          "value": "Super Charged!"
+          "value": 5
         }
       ],
-      "$data": "energy",
+      "$data": "Energy",
       "style": "expanded"
     },
     {
       "type": "Input.ChoiceSet",
-      "id": "motivation",
+      "id": "Motivation",
       "label": "How motivated do you feel today?",
-      "value": "1",
       "isRequired": true,
       "errorMessage": "Please choose how motivated you are.",
       "choices": [
         {
           "title": "Disheartened",
-          "value": "Disheartened"
+          "value": 1
         },
         {
           "title": "Unmotivated",
-          "value": "Unmotivated"
+          "value": 2
         },
         {
           "title": "Somewhat",
-          "value": "Somewhat"
+          "value": 3
         },
         {
           "title": "Inspired",
-          "value": "Inspired"
+          "value": 4
         },
         {
           "title": "Unstoppable",
-          "value": "Unstoppable"
+          "value": 5
         }
       ],
-      "$data": "motivation",
+      "$data": "Motivation",
       "style": "expanded"
     },
     {
       "type": "Input.ChoiceSet",
-      "id": "feeling",
+      "id": "Feeling",
       "label": "How are you feeling today?",
-      "value": "1",
       "isRequired": true,
       "errorMessage": "Please choose how you are feeling today.",
       "choices": [
         {
           "title": "☺️ Relaxed ",
-          "value": "Drained"
+          "value": 1
         },
         {
           "title": "😌  Calm",
-          "value": "Running Low"
+          "value": 2
         },
         {
           "title": "😐 Neutral",
-          "value": "Operational"
+          "value": 3
         },
         {
           "title": "😟 Tense",
-          "value": "Powerful"
+          "value": 4
         },
         {
           "title": "🤯 Stressed",
-          "value": "Super Charged!"
+          "value": 5
         }
       ],
-      "$data": "feeling",
+      "$data": "Feeling",
       "style": "expanded",
       "spacing": "Large"
     },
     {
       "type": "Input.ChoiceSet",
-      "id": "work",
+      "id": "Work",
       "label": "Do you find your workload today to be reasonable?",
       "isRequired": true,
       "errorMessage": "Please choose how reasonable your workload is.",
       "choices": [
         {
           "title": "1- Reasonable",
-          "value": "1"
+          "value": 1
         },
         {
           "title": "2",
-          "value": "2"
+          "value": 2
         },
         {
           "title": "3",
-          "value": "3"
+          "value": 3
         },
         {
           "title": "4",
-          "value": "4"
+          "value": 4
         },
         {
           "title": "5- Unreasonable",
-          "value": "5"
+          "value": 5
         }
       ],
-      "$data": "work",
+      "$data": "Work",
       "style": "expanded"
     },
     {
       "type": "Input.ChoiceSet",
-      "id": "mood",
+      "id": "Mood",
       "label": "What is your mood today?",
-      "value": "1",
       "isRequired": true,
       "errorMessage": "Please choose your mood.",
       "choices": [
         {
           "title": "😫 Awful",
-          "value": "Drained"
+          "value": 1
         },
         {
           "title": "😕 Bad",
-          "value": "Running Low"
+          "value": 2
         },
         {
           "title": "🙂 Okay",
-          "value": "Operational"
+          "value": 3
         },
         {
           "title": "😃 Good",
-          "value": "Powerful"
+          "value": 4
         },
         {
           "title": "😄 Great",
-          "value": "Super Charged!"
+          "value": 5
         }
       ],
-      "$data": "mood",
+      "$data": "Mood",
       "style": "expanded"
     }
   ],
@@ -208,7 +204,7 @@
       "id": "Cancel",
       "associatedInputs": "none",
       "data": {
-        "data": "cancel"
+        "ButtonType": "cancel"
       }
     },
     {
@@ -217,7 +213,7 @@
       "style": "positive",
       "id": "Submit",
       "data": {
-        "data": "submit"
+        "ButtonType": "submit"
       }
     }
   ],

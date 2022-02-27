@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
@@ -17,15 +14,10 @@ namespace ProActiveBot.Bot
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient().AddControllers().AddNewtonsoftJson();
-
-            // Create the Bot Framework Authentication to be used with the Bot Adapter.
             services.AddSingleton<BotFrameworkAuthentication, ConfigurationBotFrameworkAuthentication>();
-
-            // Create the Bot Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
             // Create a global hashset for our ConversationReferences
@@ -51,14 +43,10 @@ namespace ProActiveBot.Bot
 
             services.AddSingleton<UserState>();
             services.AddSingleton<ConversationState>();
-
-            //services.AddSingleton<MainDialog>();
             services.AddSingleton<CheckInDialog>();
-
             services.AddTransient<IBot, TeamsBot<CheckInDialog>>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -75,7 +63,6 @@ namespace ProActiveBot.Bot
                     endpoints.MapControllers();
                 });
 
-            // app.UseHttpsRedirection();
         }
     }
 }

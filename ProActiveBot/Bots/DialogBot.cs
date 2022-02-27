@@ -1,6 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
+﻿
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Teams;
@@ -13,18 +11,12 @@ using System.Threading.Tasks;
 
 namespace ProActiveBot.Bot.Bots
 {
-    // This IBot implementation can run any type of Dialog. The use of type parameterization is to allows multiple different bots
-    // to be run at different endpoints within the same project. This can be achieved by defining distinct Controller types
-    // each with dependency on distinct IBot types, this way ASP Dependency Injection can glue everything together without ambiguity.
-    // The ConversationState is used by the Dialog system. The UserState isn't, however, it might have been used in a Dialog implementation,
-    // and the requirement is that all BotState objects are saved at the end of a turn.
     public class DialogBot<T> : TeamsActivityHandler where T : Dialog
     {
         protected readonly BotState ConversationState;
         protected readonly Dialog Dialog;
         protected readonly ILogger Logger;
         protected readonly BotState UserState;
-        private readonly string _baseUrl;
         // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
 
@@ -32,7 +24,6 @@ namespace ProActiveBot.Bot.Bots
             )
         {
             _conversationReferences = conversationReferences;
-            _baseUrl = configuration["BaseUrl"];
             ConversationState = conversationState;
             UserState = userState;
             Dialog = dialog;
@@ -42,8 +33,6 @@ namespace ProActiveBot.Bot.Bots
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
-
-            // Save any state changes that might have occurred during the turn.
             await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
             await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
         }

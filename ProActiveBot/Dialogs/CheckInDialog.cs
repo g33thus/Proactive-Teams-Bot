@@ -3,22 +3,26 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ProActiveBot.Bot.Constants;
 using ProActiveBot.Bot.Helpers;
 using ProActiveBot.Bot.Models;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProActiveBot.Bot.Dialogs
 {
-    public class CheckInDialog : LogoutDialog
+    public class CheckInDialog : ComponentDialog
     {
         protected readonly ILogger Logger;
+        private readonly IConfiguration _configuration;
 
-        public CheckInDialog(IConfiguration configuration, ILogger<CheckInDialog> logger) : base(nameof(CheckInDialog), configuration["ConnectionName"])
+        public CheckInDialog(IConfiguration configuration, ILogger<CheckInDialog> logger)
         {
             Logger = logger;
-
+            _configuration = configuration;
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
@@ -34,21 +38,21 @@ namespace ProActiveBot.Bot.Dialogs
         private async Task<DialogTurnResult> CheckInStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var value = stepContext?.Context?.Activity?.Value;
-            if (value!=null)
+            if (value != null)
             {
                 var asJobject = JObject.FromObject(value);
 
-                var cardValue = asJobject.ToObject<CardTaskFetchValue<string>>()?.Data;
+                var cardValue = asJobject.ToObject<CheckinValue>();
                 IMessageActivity reply = null;
-                switch (cardValue)
+                switch (cardValue?.ButtonType)
                 {
                     case ButtonIds.Teams:
                         reply = MessageFactory.Attachment(CardHelper.GetCheckInCard());
                         await stepContext.Context.SendActivityAsync(reply, cancellationToken);
                         break;
                     case ButtonIds.Submit:
-                        reply = MessageFactory.Attachment(CardHelper.GetCheckInCard());
-
+                        cardValue.User = GetUser(stepContext?.Context?.Activity);
+                        reply = PostDataToDB(cardValue);
                         break;
                     default:
                         break;
@@ -57,5 +61,27 @@ namespace ProActiveBot.Bot.Dialogs
             }
             return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
+        private User GetUser(Activity activity)
+        {
+            var conversationReference = activity.GetConversationReference();
+            return new() { Id = conversationReference.User.AadObjectId, Name = conversationReference.User.Name };
+        }
+        private IMessageActivity PostDataToDB(CheckinValue checkInData)
+        {
+            HttpContent dataToPost = GetCheckinFormData(checkInData);
+            var response = HTTPRequestHelper.Post(_configuration.GetValue<string>("ApiUrl"), dataToPost);
+            if (response.IsSuccessStatusCode)
+            {
+                return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.Completed));
+            }
+            else return MessageFactory.Attachment(CardHelper.SimpleTextCard(StringConstants.PostDataFailure));
+        }
+        private HttpContent GetCheckinFormData(CheckinValue checkInData)
+        {
+            checkInData.ButtonType = null;
+            var json = JsonConvert.SerializeObject(checkInData, Formatting.Indented);
+            return new StringContent(json);
+        }
+
     }
 }
